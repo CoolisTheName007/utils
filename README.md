@@ -1,0 +1,1 @@
+This is just a miscellany of stuff ported/done for CC. Most of it, if not all, is not mine.
