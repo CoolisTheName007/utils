@@ -20,9 +20,9 @@ function M.Bench(name,func,loops,...)
 	loops=loops or 100
 	local q0=os.clock()
 	for i=1,loops do
-		if i%10000==0 then
-			sleep(0)
-		end
+		-- if i%10000==0 then
+			-- sleep(0)
+		-- end
 		func(...)
 	end
 	local q1=os.clock()
@@ -35,8 +35,8 @@ function M.Bench(name,func,loops,...)
 end
 
 ---------------------------
---- Do Benchmark over a table of functions
--- @param functions (table) table of functions to check
+--- Do Benchmark over a table of pairs name->functions
+-- @param (name->function) (table) table of functions to check
 -- @param loops (number) how often to call the function (optional, default 100)
 ---------------------------
 function M.BenchTable(functions,loops)

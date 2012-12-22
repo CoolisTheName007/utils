@@ -1,4 +1,4 @@
-local pack=require 'packages.utils.table'.pack
+local pack=require 'utils.table'.pack
 local io=io
 local string=string
 local table=table
@@ -6,6 +6,7 @@ local type=type
 local tostring=tostring
 local pairs=pairs
 local print=print
+local getmetatable=getmetatable
 
 
 env=getfenv()
@@ -43,7 +44,8 @@ function vprint (write, print_indent, ...)
       elseif t=="number"  then write(tostring(x))
       elseif t=="nil"     then write("nil")
       elseif t=="table"   then
-         if in_progress[x] then write(tostring(table)) else
+		if getmetatable(x) and getmetatable(x).__tostring then write(tostring(x))
+        elseif in_progress[x] then write(tostring(table)) else
             in_progress[x] = true
             indent_level = indent_level+1
 

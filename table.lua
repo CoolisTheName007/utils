@@ -4,8 +4,8 @@
 -- @module utils.table
 -- 
 
-local coroutine = coroutine --require"coroutine"
-local cleanpath = require"packages.utils.path".clean
+local coroutine = coroutine
+local cleanpath = require"utils.path".clean
 local table = table
 
 local M = { }
@@ -55,6 +55,20 @@ function pack(...)
 end
 --Not messing with _G!!
 --table.pack = pack --until we switch to 5.2.
+
+function shcopy(src, dst)
+	dst = dst or {}
+    for k, v in pairs(src) do
+        if type(v) == 'table' then -- recursively go into tables
+            if type(dst[k]) == 'table' then
+                copy(v, dst[k], overwrite)
+            elseif overwrite or dst[k]==nil then
+                dst[k] = {}
+                copy(v, dst[k], overwrite)
+            end
+        elseif overwrite or dst[k]==nil then dst[k] = v end
+    end
+end
 
 --------------------------------------------------------------------------------
 -- Copies a table from the source to destination table.
@@ -286,8 +300,9 @@ end
 
 --public API
 M.tnil=tnil
-M.pack=pack; M.copy=copy; M.diff=diff; M.keys=keys; M.map=map;
+M.shcopy=shcopy
 M.isarray=isarray; M.isArray=isarray;
+M.pack=pack; M.copy=copy; M.diff=diff; M.keys=keys; M.map=map;
 M.sortedpairs=sortedpairs; M.sortedPairs=sortedpairs; 
 M.recursivepairs=recursivepairs; M.recursivePairs=recursivepairs; 
 M.multipairs=multipairs; M.multiPairs=multipairs;

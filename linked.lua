@@ -11,7 +11,7 @@ function Linked.new(t)
 		__index=Linked,
 		__tostring=Linked.__tostring
 		})
-	self.r,self.l={},{}
+	self.r,self.l={[0]=-1},{[-1]=0}
 	if t then self:append_r(t) end
 	return self
 end
@@ -25,13 +25,11 @@ function Linked._insert(t,val,i_l,i_r)
 end
 
 function Linked.insert_l(t,val,i_l)
-	i_l=i_l or 0
-	return Linked._insert(t,val,i_l,t.r[i_l])
+	return Linked._insert(t,val,i_l,t.r[i_l or 0])
 end
 
 function Linked.insert_r(t,val,i_r)
-	i_r=i_r or -1
-	return Linked._insert(t,val,t.l[i_r],i_r)
+	return Linked._insert(t,val,t.l[i_r or -1],i_r)
 end
 
 function Linked.remove(t,val)
