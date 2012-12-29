@@ -28,7 +28,7 @@ _stringify = function(stack, this, spacing_h, spacing_v, space_n, parsed,max_lev
 		end
 		stack[#stack+1] = ")"
 	elseif this_type == "table" then
-		if parsed[this] or level==max_level then
+		if parsed[this] or level==max_level or (getmetatable(this) and getmetatable(this).__tostring) then
 			stack[#stack+1] = "<"..tostring(this)..">"
 		else
 			level=level+1
