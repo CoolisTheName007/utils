@@ -7,10 +7,18 @@ local tostring=tostring
 local pairs=pairs
 local print=print
 local getmetatable=getmetatable
-
+local select=select
 
 env=getfenv()
 setmetatable(env,nil)
+
+mtostring=function(...)
+	local t={}
+	for i=1,select('#',...) do
+		table.insert(t,tostring(select(i,...)))
+	end
+	return table.concat(t,';')
+end
 
 -- Make sure stdout is actually flushed every line
 if io and io.stdout then
