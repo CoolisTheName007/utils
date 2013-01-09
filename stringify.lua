@@ -76,7 +76,7 @@ local dprint = function(this,max_level)
 	)
 	for i=1,#stack do
 		write(stack[i])
-		os.pullEvent()
+		os.pullEvent('key')
 	end
 	write('\n')
 end
