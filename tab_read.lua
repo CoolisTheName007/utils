@@ -10,11 +10,11 @@
 --and pressing: [tab][rigthShift][tab]
 
 --fix for CC twisted bits
-local old_getmetatable=getmetatable
-local getmetatable=function(t)
-	if type(t)=='string' then return string end
-	return old_getmetatable(t)
-end
+-- local old_getmetatable=getmetatable
+-- local getmetatable=function(t)
+	-- if type(t)=='string' then return string end
+	-- return old_getmetatable(t)
+-- end
 
 local pathutils={} --API
 do
@@ -162,7 +162,7 @@ function get_fs_matches(s)
 	local tMatches={}
 	local path = s:match([[[^%[%]%'%"]+$]]) or "" -- get the significant end part of the path
     local p, s, l = path:match("^(.-)([/\\]?)([^/\\]*)$") -- separate into sub path and leaf, getting the separator
-	local sAbsPath = shell.resolve( p )
+	local sAbsPath = _G.shell and _G.shell.resolve( p ) or p
 	if fs.isDir( sAbsPath ) then
 		-- Search for matches in the resolved folder.
 		local ok, tFileList = pcall( fs.list, sAbsPath )
@@ -191,7 +191,7 @@ end
 
 local get_env_matches=autocomplete
 
-function read( _sReplaceChar, _tHistory,_tEnv,_mode)
+local function read( _sReplaceChar, _tHistory,_tEnv,_mode)
 	local mode=_mode==nil or _mode==true
 	
     term.setCursorBlink( true )
@@ -362,14 +362,14 @@ function read( _sReplaceChar, _tHistory,_tEnv,_mode)
 	term.setCursorBlink( false )
 	term.setCursorPos( w + 1, sy )
 	print()
-   
 	return sLine
 end
-function test()
+local function test()
 	a=setmetatable({},{__index={b=1,c=function()end},__newindex={},__tostring=function() return'aaa' end})
 	repeat
 		read(nil,nil,getfenv(),false)
 		print()
 	until false
 end
+return read
 -- test()
